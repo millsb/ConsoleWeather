@@ -1,5 +1,6 @@
 require('net/http')
 require('json')
+require('xmlsimple')
 
 class YahooWeather
 	
@@ -65,12 +66,14 @@ class YahooWeather
 
 	def GetWeather()
 	
-		yahoo_url = URI("http://weather.yahooapis.com/forecastrss?w=" + @woeid)
+		yahoo_url = URI("http://weather.yahooapis.com/forecastrss?w=" + @woeid.to_s)
 
 		response = Net::HTTP.get_response(yahoo_url)
 
-		# TODO: finish here -> must parse XML not JSON
+		xml_data = XmlSimple.xml_in(response.body)
 
+puts xml_data['version']
+		
 	end
 	
 	# TODO: make private
