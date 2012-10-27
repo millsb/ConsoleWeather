@@ -72,8 +72,31 @@ class YahooWeather
 
 		xml_data = XmlSimple.xml_in(response.body)
 
-puts xml_data['version']
-		
+		return ParseXml(xml_data)
+	end
+
+	def ParseXml(xml)
+
+		return_val = ''
+
+		xml['channel'].each do |item|
+			item.each do |j|
+				if j.to_s.include? '"condition"=>'
+					obj = j.to_a
+					o = obj[1].to_a[0]
+					o['forecast'].each{|x|
+						day		= x['day']						
+						high	= x['high']
+						low		= x['low']
+						code	= @codes[x['code'].to_i]
+
+						return_val << "#{day} (#{high}/#{low}) #{code}\n"
+					}
+				end
+			end
+		end
+
+		return return_val
 	end
 	
 	# TODO: make private
