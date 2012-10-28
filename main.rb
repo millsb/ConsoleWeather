@@ -6,5 +6,5 @@ zip = ARGV[0]
 
 yahoo = YahooWeather.new(zip)
 
-puts yahoo.GetWeather
+yahoo.GetWeather.each { |w| puts w }
 
