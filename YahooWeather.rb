@@ -6,6 +6,7 @@ class YahooWeather
 	
 	@@codes
 	@@woeid
+	@@api_key
 	
 	def initialize(zip)
 		@codes =
@@ -61,12 +62,15 @@ class YahooWeather
 			3200 => "not available" 
 		}
 
+		
+		@api_key = "[YOUR_API_KEY_HERE]"
+	
 		@woeid = GetWOEID(zip)
 	end
 
 	def GetWeather()
 	
-		yahoo_url = URI("http://weather.yahooapis.com/forecastrss?w=" + @woeid.to_s)
+		yahoo_url = URI("http://weather.yahooapis.com/forecastrss?w=#{@woeid.to_s}")
 
 		response = Net::HTTP.get_response(yahoo_url)
 
@@ -111,9 +115,15 @@ class YahooWeather
 	
 		id = nil
 
+		# test for api
+		if @api_key == '[YOUR_API_KEY_HERE]' then
+			puts 'no api key set'	
+			return
+		end
+
 		if (zip != "" || zip != null)
 			
-			yahoo_url = URI("http://where.yahooapis.com/v1/places.q('" + zip + "')?format=json&appid=4104c62c15d56ace9f895c36abe0d56f0ffadd67")
+			yahoo_url = URI("http://where.yahooapis.com/v1/places.q('" + zip + "')?format=json&appid=#{@api_key}")
 			
 			response = Net::HTTP.get_response(yahoo_url)
 
